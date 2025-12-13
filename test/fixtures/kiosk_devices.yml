@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  device_uid: MyString
+  name: MyString
+  enabled: false
+  merchant: one
+  mission_admin: one
+
+two:
+  device_uid: MyString
+  name: MyString
+  enabled: false
+  merchant: two
+  mission_admin: two

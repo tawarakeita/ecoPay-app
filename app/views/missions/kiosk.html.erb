@@ -1,1 +1,21 @@
-kiosk
+<main>
+  <h1 class="m-9 flex justify-center text-3xl">QRコードをスキャンしてください</h1>
+
+  <div class="flex justify-center items-center mt-30">
+    <canvas id="qr"></canvas>
+  </div>
+</main>
+
+<p id="qr_text" class="mt-4 text-sm text-gray-500"></p>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.js"></script>
+
+<script>
+  (function() {
+    var qr = new QRious({
+      element: document.getElementById('qr'),
+      value: `${window.location.origin}/missions/complete?payload=<%= @payload %>&sig=<%= @sig %>`,
+      size: 300
+    });
+  })();
+</script>

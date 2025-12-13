@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_20_120000) do
+ActiveRecord::Schema[7.1].define(version: 2025_11_24_000001) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -36,6 +36,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_20_120000) do
     t.integer "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "kiosk_devices", force: :cascade do |t|
+    t.string "device_uid"
+    t.string "name"
+    t.boolean "enabled"
+    t.integer "merchant_id", null: false
+    t.integer "mission_admin_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["device_uid"], name: "index_kiosk_devices_on_device_uid"
+    t.index ["merchant_id"], name: "index_kiosk_devices_on_merchant_id"
+    t.index ["mission_admin_id"], name: "index_kiosk_devices_on_mission_admin_id"
   end
 
   create_table "merchants", force: :cascade do |t|
@@ -95,14 +108,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_20_120000) do
 
   create_table "point_transactions", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "merchant_id", null: false
+    t.integer "merchant_id"
     t.string "transaction_type"
     t.integer "amount"
     t.integer "mission_id"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "mission_admin_id"
     t.index ["merchant_id"], name: "index_point_transactions_on_merchant_id"
+    t.index ["mission_admin_id"], name: "index_point_transactions_on_mission_admin_id"
     t.index ["mission_id"], name: "index_point_transactions_on_mission_id"
     t.index ["user_id"], name: "index_point_transactions_on_user_id"
   end
@@ -121,11 +136,14 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_20_120000) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "kiosk_devices", "merchants"
+  add_foreign_key "kiosk_devices", "mission_admins"
   add_foreign_key "missions", "merchants"
   add_foreign_key "missions", "mission_admins"
   add_foreign_key "payments", "merchants"
   add_foreign_key "payments", "users"
   add_foreign_key "point_transactions", "merchants"
+  add_foreign_key "point_transactions", "mission_admins"
   add_foreign_key "point_transactions", "missions"
   add_foreign_key "point_transactions", "users"
 end

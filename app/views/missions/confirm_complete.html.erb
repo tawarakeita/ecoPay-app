@@ -1,10 +1,14 @@
-<h2 class="m-9 flex justify-center text-3xl text-center mt-8">ミッション内容の確認</h2>
 <div class="mx-auto max-w-lg border p-4 rounded" style="margin-top: 20px; width: 80vw; margin-left: auto; margin-right: auto;">
   <p class="text-2xl mb-2.5" style="margin-bottom: 10px;"><%= mission.title %></p>
   <p><%= mission.description %></p>
   <p class="mt-1">付与ポイント: <%= mission.point %>ポイント</p>
+
   <%= form_with url: finalize_complete_missions_path, method: :post do |f| %>
-    <%= hidden_field_tag :code, code %>
+    <%# Use server-provided @payload/@sig when present; otherwise generate payload here (but prefer server-signed) %>
+    <% payload_value = defined?(@payload) && @payload.present? ? @payload : "#{code}:#{Time.now.to_i}" %>
+    <%= hidden_field_tag :payload, payload_value %>
+    <%# sig is expected to be provided by the server in @sig. If missing, finalize will reject. %>
+    <%= hidden_field_tag :sig, (defined?(@sig) ? @sig : nil) %>
     <div class="flex justify-center" style="margin-top: 20px;">
       <%= f.submit "ポイントを取得", class: "px-4 py-2 rounded-sm text-white p-3", style: "background-color: #5757d2;" %>
     </div>
