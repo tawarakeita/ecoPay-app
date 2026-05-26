@@ -127,7 +127,7 @@ class MissionsController < ApplicationController
         raw_sig = OpenSSL::HMAC.digest("SHA256", Rails.application.credentials.qr_secret, @payload)
         @sig = Base64.urlsafe_encode64(raw_sig)[0,8]
 
-        render :confirm_complete, locals: { mission: mission, code: code }
+        render :confirm_complete, locals: { mission: mission, code: code } and return
       else
         redirect_to root_path, alert: "無効なコードです"
       end
