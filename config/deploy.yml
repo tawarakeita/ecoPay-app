@@ -23,7 +23,7 @@ registry:
     - KAMAL_REGISTRY_PASSWORD
 
 builder:
-  arch: amd64
+  arch: arm64
 
 ssh:
   user: ec2-user
